@@ -1,0 +1,75 @@
+
+<script type="text/x-red" data-template-name="vis in">
+   <!-- data-template-name identifies the node type this is for              -->
+
+   <!-- Each of the following divs creates a field in the edit dialog.       -->
+   <!-- Generally, there should be an input for each property of the node.   -->
+   <!-- The for and id attributes identify the corresponding property        -->
+   <!-- (with the 'node-input-' prefix).                                     -->
+   <!-- The available icon classes are defined Twitter Bootstrap glyphicons  -->
+    <div class="form-row">
+        <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
+        <input type="text" id="node-input-topic" placeholder="Topic">
+    </div>
+
+    <br/>
+    <!-- By convention, most nodes have a 'name' property. The following div -->
+    <!-- provides the necessary field. Should always be the last option      -->
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+<script type="text/x-red" data-help-name="vis in">
+    <p>Calls a MongoDB collection method based on the selected operator.</p>
+        <p>Find queries a collection using the <b>msg.payload</b> as the query statement as per the .find() function. Optionally, you may also (via a function) set a <b>msg.projection</b> object to constrain the returned fields, a <b>msg.sort</b> object, a <b>msg.limit</b> number and a <b>msg.skip</b> number.</p>
+    <p>Count returns a count of the number of documents in a collection or matching a query using the <b>msg.payload</b> as the query statement.</p>
+    <p>Aggregate provides access to the aggregation pipeline using the <b>msg.payload</b> as the pipeline array.</p>
+    <p>You can either set the collection method in the node config or on <b>msg.collection</b>. Setting it in the node will override <b>msg.collection</b>.</p>
+    <p>See the <a href="http://docs.mongodb.org/manual/reference/method/db.collection.find/" target="new"><i>MongoDB collection methods docs</i></a> for examples.</p>
+    <p>The result is returned in <b>msg.payload</b>.</p>
+</script>
+
+<script type="text/javascript">
+    function oneditprepare() {
+    /*$("#node-input-operation").change(function () {
+            var id = $("#node-input-operation option:selected").val();
+
+            if (id === "update") {
+                $(".node-input-payonly").hide();
+                $(".node-input-upsert, .node-input-multi").show();
+            } else if (id === "delete") {
+                $(".node-input-payonly, .node-input-upsert, .node-input-multi").hide();
+            } else {
+                $(".node-input-payonly").show();
+                $(".node-input-upsert, .node-input-multi").hide();
+            }
+        });
+
+        $("#node-input-collection").change(function () {
+            if($("#node-input-collection").val() === "") {
+                $("#node-warning").show();
+            } else {
+                $("#node-warning").hide();
+            }
+        });*/
+    }
+
+    RED.nodes.registerType('vis in', {
+        category: 'advanced-input',
+        color: "rgb(218, 196, 180)",
+        defaults: {
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "vis.png",
+        label: function() {
+            var visNode = RED.nodes.node(this.vis);
+            return this.name || (visNode ? visNode.label() + " " + this.collection: "vis");
+        },
+        labelStyle: function() {
+            return this.name ? "node_label_italic" : "";
+        },
+        oneditprepare: oneditprepare
+    });
+</script>
