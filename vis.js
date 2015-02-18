@@ -21,15 +21,68 @@ module.exports = function(RED) {
     var server = null;
     var subscribes = {};
     var settings = require(process.env.NODE_RED_HOME+"/red/red").settings;
-    var base = (settings.get("userDir") || (__dirname + '/../node-red/')) + 'vis/';
+    var base = (settings.get("userDir") || (__dirname + '/../node-red/'));
     var nodes = [];
+    var language = 'en';
 
-    function initSocket(socket) {
-        socketEvents(socket);
-    }
-
-    function publish(socket, type, id, obj) {
-        socket.emit(type, id, obj);
+    function getMime(filename) {
+        var ext = filename.match(/\.[^.]+$/);
+        var isBinary = false;
+        var _mimeType;
+        if (ext == '.css') {
+            _mimeType = 'text/css';
+        } else if (ext == '.bmp') {
+            _mimeType = 'image/bmp';
+            isBinary = true;
+        } else if (ext == '.png') {
+            isBinary = true;
+            _mimeType = 'image/png';
+        } else if (ext == '.jpg') {
+            isBinary = true;
+            _mimeType = 'image/jpeg';
+        } else if (ext == '.jpeg') {
+            isBinary = true;
+            _mimeType = 'image/jpeg';
+        } else if (ext == '.gif') {
+            isBinary = true;
+            _mimeType = 'image/gif';
+        } else if (ext == '.tif') {
+            isBinary = true;
+            _mimeType = 'image/tiff';
+        } else if (ext == '.js') {
+            _mimeType = 'application/javascript';
+        } else if (ext == '.html') {
+            _mimeType = 'text/html';
+        } else if (ext == '.htm') {
+            _mimeType = 'text/html';
+        } else if (ext == '.json') {
+            _mimeType = 'application/json';
+        } else if (ext == '.xml') {
+            _mimeType = 'text/xml';
+        } else if (ext == '.svg') {
+            _mimeType = 'image/svg+xml';
+        } else if (ext == '.eot') {
+            isBinary = true;
+            _mimeType = 'application/vnd.ms-fontobject';
+        } else if (ext == '.ttf') {
+            isBinary = true;
+            _mimeType = 'application/font-sfnt';
+        } else if (ext == '.woff') {
+            isBinary = true;
+            _mimeType = 'application/font-woff';
+        } else if (ext == '.wav') {
+            isBinary = true;
+            _mimeType = 'audio/wav';
+        } else if (ext == '.mp3') {
+            isBinary = true;
+            _mimeType = 'audio/mpeg3';
+        } else if (ext == '.ogg') {
+            isBinary = true;
+            _mimeType = 'audio/ogg';
+        } else {
+            _mimeType = 'text/javascript'
+        }
+        return {isBinary: isBinary, mimeType: _mimeType, ext: ext};
     }
 
     function mkpathSync(rootpath, dirpath) {
@@ -49,7 +102,7 @@ module.exports = function(RED) {
     function socketEvents(socket, user) {
         // TODO Check if user may create and delete objects and so on
         socket.on('name', function (name) {
-            console.log('Connected ' + name);
+            // console.log('Connected ' + name);
         });
 
         /*
@@ -58,31 +111,29 @@ module.exports = function(RED) {
         socket.on('getObject', function (id, callback) {
             console.log('getObject ' + id);
             if (id == 'system.config') {
-                if (callback) callback(null, {common: {language: 'en'}});
+                if (callback) callback(null, {common: {language: language}});
             } else if (callback) {
                 callback(null, {});
             }
         });
 
         socket.on('getObjects', function (callback) {
-            console.log('getObjects');
-            //that.adapter.getForeignObjects('*', callback);
             if (callback) callback(null, {});
         });
 
         socket.on('subscribe', function (pattern) {
-            console.log('subscribe');
-            //subscribe(this, 'stateChange', pattern)
+            // console.log('subscribe');
+            // subscribe(this, 'stateChange', pattern)
         });
 
         socket.on('unsubscribe', function (pattern) {
-            console.log('unsubscribe');
-            //unsubscribe(this, 'stateChange', pattern)
+            // console.log('unsubscribe');
+            // unsubscribe(this, 'stateChange', pattern)
         });
 
         socket.on('getObjectView', function (design, search, params, callback) {
-            console.log('getObjectView ' + design + ' ' + search + ' ' + JSON.stringify(params));
-            //that.adapter.objects.getObjectView(design, search, params, callback);
+            // console.log('getObjectView ' + design + ' ' + search + ' ' + JSON.stringify(params));
+            // that.adapter.objects.getObjectView(design, search, params, callback);
             if (callback) callback(null, {rows: []});
         });
         // TODO check user name
@@ -100,19 +151,17 @@ module.exports = function(RED) {
         });
 
         socket.on('getState', function (id, callback) {
-            console.log('getState');
+            console.log('getState ' + id);
 //            that.adapter.getForeignState(id, callback);
         });
         // Todo check user name
         socket.on('setState', function (id, state, callback) {
-            console.log('setState');
             for (var i = 0; i < nodes.length; i++) {
-                nodes.send({topic: id, payload: state});
+                nodes[i].send({topic: id, payload: state});
             }
         });
 
         socket.on('getVersion', function (callback) {
-            console.log('getVersion');
             if (typeof callback === 'function') callback('0.0.1');
         });
 
@@ -144,31 +193,33 @@ module.exports = function(RED) {
         });
 
         socket.on('readFile', function (_adapter, fileName, callback) {
-            console.log('readFile ' + fileName);
-            if (fs.existsSync(base + fileName)) {
-                if (callback) callback(null, fs.readFileSync(base + fileName).toString());
+            //console.log('readFile ' + _adapter + ' ' + fileName);
+            if (fs.existsSync(base + (_adapter ? _adapter + '/': '') + fileName)) {
+                if (callback) callback(null, fs.readFileSync(base + (_adapter ? _adapter + '/': '') + fileName).toString());
             } else {
                 if (callback) callback('Not exist', null);
             }
         });
 
         socket.on('readFile64', function (_adapter, fileName, callback) {
-            console.log('readFile64 ' + fileName);
-            if (fs.existsSync(base + fileName)) {
-                if (callback) callback(null, fs.readFileSync(base + fileName).toString('base64'));
+            //console.log('readFile64 ' + fileName);
+            if (fs.existsSync(base + (_adapter ? _adapter + '/': '')+ fileName)) {
+                if (callback) callback(null, fs.readFileSync(base + (_adapter ? _adapter + '/': '') + fileName).toString('base64'));
             } else {
                 if (callback) callback('Not exist', null);
             }
         });
 
         socket.on('writeFile64', function (_adapter, fileName, data64, callback) {
-            console.log('writeFile64 ' + fileName);
+            //console.log('writeFile64 ' + fileName);
             if (!fs.existsSync(base)) fs.mkdirSync(base);
-            mkpathSync(base, fileName);
+
+            mkpathSync(base, (_adapter ? _adapter + '/': '') + fileName);
 
             try {
                 var buffer = new Buffer(data64, 'base64');
-                fs.writeFileSync(base + fileName, buffer);
+                var info   = getMime(fileName);
+                fs.writeFileSync(base + (_adapter ? _adapter + '/': '') + fileName, buffer, {'flags': 'w', 'encoding': info.isBinary ? 'binary' : 'utf8'});
             } catch (e) {
                 console.log(JSON.stringify(e));
                 if (callback) callback(e);
@@ -178,28 +229,45 @@ module.exports = function(RED) {
         });
 
         socket.on('readDir', function (_adapter, dirName, callback) {
-            console.log('readDir ' + dirName);
-            //that.adapter.readDir(_adapter, dirName, callback);
+            //console.log('readDir ' + _adapter + ' ' + dirName);
+            if (fs.existsSync(base + (_adapter ? _adapter + '/' : '') + dirName)) {
+                try {
+                    var files = fs.readdirSync(base + (_adapter ? _adapter + '/' : '') + dirName)
+                    files.sort();
+                    var res = [];
+                    for (var i = 0; i < files.length; i++) {
+                        var stats = fs.statSync(base + (_adapter ? _adapter + '/' : '') + dirName + files[i]);
+                        res.push({file: files[i], stats: stats, isDir: stats.isDirectory()})
+                    }
+
+                    if (callback) callback(null, res);
+                } catch (e) {
+                    if (callback) callback(e, []);
+                }
+            } else {
+                if (callback) callback('Not exists', []);
+            }
         });
 
         socket.on('disconnect', function () {
-            console.log('disonnect');
+            //console.log('disonnect');
             //unsubscribeSocket(this, 'stateChange');
             //if (!that.infoTimeout) that.infoTimeout = setTimeout(updateConnectedInfo, 1000);
         });
 
         socket.on('reconnect', function () {
-            console.log('reconnect');
+            //console.log('reconnect');
             //subscribeSocket(this, 'stateChange');
         });
 
         socket.on('writeFile', function (_adapter, fileName, data, callback) {
-            console.log('writeFile ' + fileName);
+            //console.log('writeFile ' + _adapter + ' ' + fileName);
             if (!fs.existsSync(base)) fs.mkdirSync(base);
-            mkpathSync(base, fileName);
+            mkpathSync(base, (_adapter ? _adapter + '/' : '') + fileName);
 
             try {
-                fs.writeFileSync(base + fileName, data);
+                var info = getMime(fileName);
+                fs.writeFileSync(base + (_adapter ? _adapter + '/' : '') + fileName, data, {'flags': 'w', 'encoding': info.isBinary ? 'binary' : 'utf8'});
             } catch (e) {
                 console.log(JSON.stringify(e));
                 if (callback) callback(e);
@@ -207,40 +275,72 @@ module.exports = function(RED) {
             }
             if (callback) callback();
         });
+
         socket.on('unlink', function (_adapter, name, callback) {
-            console.log('unlink ' + name);
-            //that.adapter.unlink(_adapter, name, callback);
+            //console.log('unlink ' + _adapter + ' ' + name);
+            if (fs.existsSync(base + (_adapter ? _adapter + '/' : '') + name)) {
+                try {
+                    var stat = fs.statSync(base + (_adapter ? _adapter + '/' : '') + name);
+                    if (stat.isDirectory()) {
+                        // TODO recursive deletion
+                        fs.rmdirSync(base + (_adapter ? _adapter + '/' : '') + name);
+                    } else {
+                        fs.unlinkSync(base + (_adapter ? _adapter + '/' : '') + name);
+                    }
+                    if (callback) callback();
+                    return;
+                } catch (e) {
+                    if (callback) callback(e);
+                }
+            }
         });
+
         socket.on('rename', function (_adapter, oldName, newName, callback) {
-            console.log('rename ' + oldName);
-            //that.adapter.rename(_adapter, oldName, newName, callback);
+            //console.log('rename ' + _adapter + ' ' + oldName);
+            if (fs.existsSync(base + (_adapter ? _adapter + '/' : '') + oldName)) {
+                try {
+                    fs.renameSync(base + (_adapter ? _adapter + '/' : '') + oldName, base + (_adapter ? _adapter + '/' : '') + newName);
+                    if (callback) callback();
+                    return;
+                } catch (e) {
+                    if (callback) callback(e);
+                }
+            }
         });
+
         socket.on('mkdir', function (_adapter, dirname, callback) {
-            console.log('mkdir ' + dirname);
-            //that.adapter.mkdir(_adapter, dirname, callback);
+            //console.log('mkdir ' + _adapter + ' ' + dirname);
+            if (!fs.existsSync(base + (_adapter ? _adapter + '/' : '') + dirname)) {
+                try {
+                    fs.mkdirSync(base + (_adapter ? _adapter + '/' : '') + dirname);
+                    if (callback) callback();
+                    return;
+                } catch (e) {
+                    if (callback) callback(e);
+                }
+            }
         });
     }
 
     function publishAll(type, id, obj) {
-        if (id === undefined) {
-            console.log('Problem');
-        }
+        if (id === undefined) console.log('Problem');
 
         var clients = server.sockets.connected;
 
         for (var i in clients) {
-            publish(clients[i], type, id, obj);
+            clients[i].emit(type, id, obj);
         }
     }
 
     function createServer() {
         if (server) return;
         server = io.listen(RED.server);
-        server.on('connection', initSocket);
+        server.on('connection', socketEvents);
     }
 
 	function VisNodeSet(n) {
         RED.nodes.createNode(this,n);
+        if (n.language) language = n.language;
 		var that=this;
         createServer();
 		this.on("input",function(msg) {
@@ -260,7 +360,7 @@ module.exports = function(RED) {
 
     RED.httpAdmin.get('/_socket/*', function(req, res, next) {
         res.set('Content-Type', 'application/javascript');
-        res.send('var socketUrl = ""; var socketSession = "' + '' + '";');
+        res.send('var socketUrl = ""; var socketSession = "' + '' + '"; var socketNamespace = "vis";');
     });
 
     RED.httpAdmin.get('/vis/*', function(req, res, next){
@@ -274,69 +374,25 @@ module.exports = function(RED) {
         }
         file = __dirname + '/node_modules/iobroker.vis/www/' + f[0];
 
+        var info = getMime(file);
         if (fs.existsSync(file)) {
-            var isBinary = false;
-            var ext = file.match(/\.[^.]+$/);
-            var _mimeType;
-            if (ext == '.css') {
-                _mimeType = 'text/css';
-            } else if (ext == '.bmp') {
-                _mimeType = 'image/bmp';
-                isBinary = true;
-            } else if (ext == '.png') {
-                isBinary = true;
-                _mimeType = 'image/png';
-            } else if (ext == '.jpg') {
-                isBinary = true;
-                _mimeType = 'image/jpeg';
-            } else if (ext == '.jpeg') {
-                isBinary = true;
-                _mimeType = 'image/jpeg';
-            } else if (ext == '.gif') {
-                isBinary = true;
-                _mimeType = 'image/gif';
-            } else if (ext == '.tif') {
-                isBinary = true;
-                _mimeType = 'image/tiff';
-            } else if (ext == '.js') {
-                _mimeType = 'application/javascript';
-            } else if (ext == '.html') {
-                _mimeType = 'text/html';
-            } else if (ext == '.htm') {
-                _mimeType = 'text/html';
-            } else if (ext == '.json') {
-                _mimeType = 'application/json';
-            } else if (ext == '.xml') {
-                _mimeType = 'text/xml';
-            } else if (ext == '.svg') {
-                _mimeType = 'image/svg+xml';
-            } else if (ext == '.eot') {
-                isBinary = true;
-                _mimeType = 'application/vnd.ms-fontobject';
-            } else if (ext == '.ttf') {
-                isBinary = true;
-                _mimeType = 'application/font-sfnt';
-            } else if (ext == '.woff') {
-                isBinary = true;
-                _mimeType = 'application/font-woff';
-            } else if (ext == '.wav') {
-                isBinary = true;
-                _mimeType = 'audio/wav';
-            } else if (ext == '.mp3') {
-                isBinary = true;
-                _mimeType = 'audio/mpeg3';
-            } else if (ext == '.ogg') {
-                isBinary = true;
-                _mimeType = 'audio/ogg';
-            } else {
-                _mimeType = 'text/javascript'
-            }
+            res.contentType(info.mimeType || 'text/javascript');
             var buffer = fs.readFileSync(file);
-
-            res.contentType(_mimeType || 'text/javascript');
             res.send(buffer);
         } else {
-            res.status(404).send('404 Not found. File ' + req.url + ' not found');
+            file = base + 'vis/' + f[0];
+            if (fs.existsSync(file)) {
+                res.contentType(info.mimeType || 'text/javascript');
+                var buffer = fs.readFileSync(file);
+                res.send(buffer);
+            } else {
+                if (info.ext == '.css') {
+                    res.contentType('text/css');
+                    res.send('');
+                } else {
+                    res.status(404).send('404 Not found. File ' + req.url + ' not found');
+                }
+            }
         }
 
         return;

@@ -5,7 +5,12 @@
     "dependencies": {
 		"ioBroker.vis": "*",
         "socket.io": "~1.1.0"
-   },
+    },
+	"contributors": [
+		"bluefox <bluefox@ccu.io>",
+		"hobbyquaker <hq@ccu.io>"
+	],
+    "author": "bluefox <bluefox@ccu.io>",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/iobroker/node-red-vis.git"
@@ -15,5 +20,6 @@
         "nodes": {
             "vis": "vis.js"
         }
-    }
+    },
+    "license": "CC BY-NC"
 }
