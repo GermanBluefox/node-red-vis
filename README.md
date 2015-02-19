@@ -51,4 +51,6 @@ If you click on lamp following payload will be sent:
 
 You can forward this message to your hardware to control it.
 
+The only issue is **at start** all drawn controls must receive the value.
+
 
