@@ -54,7 +54,67 @@ If you click on lamp following payload will be sent:
 
 You can forward this message to your hardware to control it.
 
+There is a possibility to export settings into vis:
+
+![Debug](doc/Import.png)
+
+Insert following code into dialog edit field:
+<pre><code>
+{
+  "settings": {
+    "style": {
+      "background_class": "hq-background-blue-marine-lines"
+    },
+    "theme": "redmond",
+    "sizex": "",
+    "sizey": "",
+    "hideDescription": false,
+    "gridSize": ""
+  },
+  "widgets": {
+    "e00001": {
+      "tpl": "tplBulbOnOffCtrl",
+      "data": {
+        "oid": "/kitchen/lamp"
+      },
+      "style": {
+        "left": "8px",
+        "top": "8px",
+        "width": "132px",
+        "height": "159px"
+      },
+      "widgetSet": "basic"
+    },
+    "e00002": {
+      "tpl": "tplRGgauge",
+      "data": {
+        "min_value": "0",
+        "max_value": "100",
+        "factor": "1",
+        "value_offset": "0",
+        "labels_color": "#000000",
+        "oid": "/balkon/temperature"
+      },
+      "style": {
+        "left": "148px",
+        "top": "9px",
+        "width": 200,
+        "height": 200
+      },
+      "widgetSet": "RGraph"
+    }
+  },
+  "rerender": false,
+  "filterList": [],
+  "activeWidgets": []
+}
+</code></pre>
+
+![Debug](doc/Import1.png)
+
+
 The only issue is **at start** all drawn controls must receive the value.
+
 You can inspire yourself [here](http://dashui.ccu.io). It is previous version of ioBroker.vis.
 
 
