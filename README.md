@@ -6,9 +6,9 @@ Functionality
 -------------
  We introduce "vis in" node which creates the visualisation server with communication via socket.io.
 
-![Demo interface](doc/demo1.png)
+![Demo interface](doc/Demo1.png)
 
-![Demo interface](doc/demo2.png)
+![Demo interface](doc/Demo2.png)
 
 Install
 -------
