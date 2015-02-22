@@ -22,7 +22,7 @@ Create "advanced => vis in" node and 3 inject nodes as pictured:
 ![node-red](doc/node-red.png)
 
 Here is code to import:
-```[{"id":"a26bad1e.5d945","type":"vis in","language":"de","x":393.09092712402344,"y":81.09089660644531,"z":"4004eda7.bffb14","wires":[["1b331485.e4cceb"]]},{"id":"1d96675d.e26999","type":"inject","name":"","topic":"/kitchen/lamp","payload":"true","payloadType":"string","repeat":"","crontab":"","once":false,"x":184.0908966064453,"y":54.09089660644531,"z":"4004eda7.bffb14","wires":[["a26bad1e.5d945"]]},{"id":"e72316cd.18dce8","type":"debug","name":"","active":true,"console":"false","complete":"false","x":686.0910186767578,"y":80.09089660644531,"z":"4004eda7.bffb14","wires":[]},{"id":"d9c35749.263ca8","type":"inject","name":"","topic":"/kitchen/lamp","payload":"false","payloadType":"string","repeat":"","crontab":"","once":false,"x":185.33331298828125,"y":112.33329772949219,"z":"4004eda7.bffb14","wires":[["a26bad1e.5d945"]]},{"id":"2d3eee9.fd2c112","type":"inject","name":"","topic":"/balkon/temperature","payload":"22","payloadType":"string","repeat":"","crontab":"","once":false,"x":197.20001220703125,"y":166.1999969482422,"z":"4004eda7.bffb14","wires":[["a26bad1e.5d945"]]},{"id":"1b331485.e4cceb","type":"switch","name":"","property":"topic","rules":[{"t":"eq","v":"/kitchen/lamp"},{"t":"eq","v":""}],"checkall":"true","outputs":2,"x":523.2000274658203,"y":81.19999694824219,"z":"4004eda7.bffb14","wires":[["e72316cd.18dce8"],[]]}]```
+```[{"id":"a26bad1e.5d945","type":"vis in","language":"en","x":393.09092712402344,"y":81.09089660644531,"z":"4004eda7.bffb14","wires":[["1b331485.e4cceb"]]},{"id":"1d96675d.e26999","type":"inject","name":"","topic":"/kitchen/lamp","payload":"true","payloadType":"string","repeat":"","crontab":"","once":false,"x":184.0908966064453,"y":54.09089660644531,"z":"4004eda7.bffb14","wires":[["a26bad1e.5d945"]]},{"id":"e72316cd.18dce8","type":"debug","name":"","active":true,"console":"false","complete":"false","x":686.0910186767578,"y":80.09089660644531,"z":"4004eda7.bffb14","wires":[]},{"id":"d9c35749.263ca8","type":"inject","name":"","topic":"/kitchen/lamp","payload":"false","payloadType":"string","repeat":"","crontab":"","once":false,"x":185.33331298828125,"y":112.33329772949219,"z":"4004eda7.bffb14","wires":[["a26bad1e.5d945"]]},{"id":"2d3eee9.fd2c112","type":"inject","name":"","topic":"/balkon/temperature","payload":"22","payloadType":"string","repeat":"","crontab":"","once":false,"x":197.20001220703125,"y":166.1999969482422,"z":"4004eda7.bffb14","wires":[["a26bad1e.5d945"]]},{"id":"1b331485.e4cceb","type":"switch","name":"","property":"topic","rules":[{"t":"eq","v":"/kitchen/lamp"},{"t":"eq","v":""}],"checkall":"true","outputs":2,"x":523.2000274658203,"y":81.19999694824219,"z":"4004eda7.bffb14","wires":[["e72316cd.18dce8"],[]]}]```
 
 Deploy it. After deploying go to [http://localhost:1880/vis/edit.html](http://localhost:1880/vis/edit.html) and create "basic - ctrl Bulb on/off":
 
@@ -54,7 +54,7 @@ If you click on lamp following payload will be sent:
 
 You can forward this message to your hardware to control it.
 
-There is a possibility to export settings into vis:
+There is a possibility to export project into vis:
 
 ![Debug](doc/Import.png)
 

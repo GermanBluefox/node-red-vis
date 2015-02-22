@@ -13,9 +13,14 @@
     "author": "bluefox <bluefox@ccu.io>",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/iobroker/node-red-vis.git"
+		"url": "https://github.com/GermanBluefox/node-red-vis.git"
 	},
     "keywords": [ "node-red", "vis", "ioBroker", "visualisation", "web front" ],
+	"readme": "README.md"
+	"homepage": "https://github.com/GermanBluefox/node-red-vis",
+	"bugs": {
+		"url": "https://github.com/GermanBluefox/node-red-vis/issues"
+	},
     "node-red"     : {
         "nodes": {
             "vis": "vis.js"

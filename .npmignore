@@ -1,0 +1,5 @@
+Gruntfile.js
+.git
+node_modules
+.gitignore
+doc
