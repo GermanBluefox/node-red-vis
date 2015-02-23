@@ -3,7 +3,7 @@
     "version"      : "0.0.5",
     "description"  : "Visualisation for node-red. Based on ioBroker.vis",
     "dependencies": {
-		"ioBroker.vis": "*",
+		"iobroker.vis": "*",
         "socket.io": "~1.1.0"
     },
 	"contributors": [
