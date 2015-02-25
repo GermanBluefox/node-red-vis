@@ -20,8 +20,7 @@ module.exports = function(RED) {
     "use strict";
     var server = null;
     var subscribes = {};
-    var settings = require(process.env.NODE_RED_HOME+"/red/red").settings;
-    var base = (settings.get("userDir") || (__dirname + '/../node-red/'));
+    var base = RED.settings.userDir || (process.env.NODE_RED_HOME + '/');
     var nodes = [];
     var language = 'en';
 
@@ -358,15 +357,16 @@ module.exports = function(RED) {
     }
 	RED.nodes.registerType("vis in",VisNodeSet);
 
-    RED.httpAdmin.get('/_socket/*', function(req, res, next) {
+//TODO: NodeRed doesn't support custom exit points, currently httpNodeRoot MUST NOT be set! 
+    RED.httpNode.get('/_socket/*', function(req, res, next) {
         res.set('Content-Type', 'application/javascript');
         res.send('var socketUrl = ""; var socketSession = "' + '' + '"; var socketNamespace = "vis";');
     });
 
-    RED.httpAdmin.get('/vis/*', function(req, res, next){
+    RED.httpNode.get('/vis/*', function(req, res, next){
         var file;
         var f = req.url.split('?');
-
+		
         if (f[0] == '/vis' || f[0] == '/vis/') {
             f[0] = 'index.html';
         } else {
