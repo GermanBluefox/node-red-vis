@@ -108,7 +108,7 @@ module.exports = function(RED) {
          *      objects
          */
         socket.on('getObject', function (id, callback) {
-            console.log('getObject ' + id);
+            //console.log('getObject ' + id);
             if (id == 'system.config') {
                 if (callback) callback(null, {common: {language: language}});
             } else if (callback) {
@@ -137,20 +137,20 @@ module.exports = function(RED) {
         });
         // TODO check user name
         socket.on('setObject', function (id, obj, callback) {
-            console.log('setObject ' + id);
+            //console.log('setObject ' + id);
             //that.adapter.setForeignObject(id, obj, callback);
         });
         /*
          *      states
          */
         socket.on('getStates', function (callback) {
-            console.log('getStates');
+            //console.log('getStates');
             //that.adapter.getForeignStates('*', callback);
             if (callback) callback(null, {});
         });
 
         socket.on('getState', function (id, callback) {
-            console.log('getState ' + id);
+            //console.log('getState ' + id);
 //            that.adapter.getForeignState(id, callback);
         });
         // Todo check user name
@@ -168,26 +168,26 @@ module.exports = function(RED) {
          *      History
          */
         socket.on('getStateHistory', function (id, start, end, callback) {
-            console.log('getStateHistory');
+            //console.log('getStateHistory');
             //that.adapter.getForeignStateHistory(id, start, end, callback);
         });
 
         // HTTP
         socket.on('httpGet', function (url, callback) {
             //if (!request) request = require('request');
-            console.log('httpGet');
+            //console.log('httpGet');
             //request(url, callback);
         });
 
         // iobroker commands
         // Todo check user name
         socket.on('sendTo', function (adapterInstance, command, message, callback) {
-            console.log('sendTo');
+            //console.log('sendTo');
             //that.adapter.sendTo(adapterInstance, command, message, callback);
         });
 
         socket.on('authEnabled', function (callback) {
-            console.log('authEnabled');
+            //console.log('authEnabled');
             //callback(that.adapter.config.auth);
         });
 
