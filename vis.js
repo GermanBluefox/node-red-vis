@@ -20,9 +20,13 @@ module.exports = function(RED) {
     "use strict";
     var server = null;
     var subscribes = {};
-    var base = (RED.settings.userDir || (process.env.NODE_RED_HOME) + '/';
+    var base = RED.settings.userDir || process.env.NODE_RED_HOME;
     var nodes = [];
     var language = 'en';
+    
+    if (base && base[base.length - 1] != '/' && base[base.length - 1] != '\\') {
+    	base += '/';
+    }
 
     function getMime(filename) {
         var ext = filename.match(/\.[^.]+$/);
