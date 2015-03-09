@@ -147,7 +147,12 @@ module.exports = function(RED) {
         /*
          *      states
          */
-        socket.on('getStates', function (callback) {
+        socket.on('getStates', function (pattern, callback) {
+			if (typeof pattern == 'function') {
+				callback = pattern;
+				pattern = null;
+			}
+		
             //console.log('getStates');
             //that.adapter.getForeignStates('*', callback);
             if (callback) callback(null, {});
