@@ -366,8 +366,8 @@ module.exports = function(RED) {
     }
 	RED.nodes.registerType("vis in",VisNodeSet);
 
-//TODO: NodeRed doesn't support custom exit points, currently httpNodeRoot MUST NOT be set! 
-    RED.httpNode.get('/_socket/*', function(req, res, next) {
+    //TODO: NodeRed doesn't support custom exit points, currently httpNodeRoot MUST NOT be set! 
+    RED.httpNode.get('*/_socket/*', function(req, res, next) {
         res.set('Content-Type', 'application/javascript');
         res.send('var socketUrl = ""; var socketSession = "' + '' + '"; var socketNamespace = "vis";');
     });
