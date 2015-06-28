@@ -103,9 +103,17 @@ module.exports = function(RED) {
     };
 
     function socketEvents(socket, user) {
-        // TODO Check if user may create and delete objects and so on
+
         socket.on('name', function (name) {
             // console.log('Connected ' + name);
+        });
+
+        socket.on('authenticate', function (user, pass, callback) {
+            if (typeof user == 'function') {
+                callback = user;
+                user = undefined;
+            }
+            if (callback) callback(true, false);
         });
 
         /*
@@ -124,12 +132,12 @@ module.exports = function(RED) {
             if (callback) callback(null, {});
         });
 
-        socket.on('subscribe', function (pattern) {
+        socket.on('subscribe', function (pattern, callback) {
             // console.log('subscribe');
             // subscribe(this, 'stateChange', pattern)
         });
 
-        socket.on('unsubscribe', function (pattern) {
+        socket.on('unsubscribe', function (pattern, callback) {
             // console.log('unsubscribe');
             // unsubscribe(this, 'stateChange', pattern)
         });
@@ -162,7 +170,7 @@ module.exports = function(RED) {
             //console.log('getState ' + id);
 //            that.adapter.getForeignState(id, callback);
         });
-        // Todo check user name
+
         socket.on('setState', function (id, state, callback) {
             for (var i = 0; i < nodes.length; i++) {
                 nodes[i].send({topic: id, payload: state});
@@ -198,6 +206,7 @@ module.exports = function(RED) {
         socket.on('authEnabled', function (callback) {
             //console.log('authEnabled');
             //callback(that.adapter.config.auth);
+            callback(false);
         });
 
         socket.on('readFile', function (_adapter, fileName, callback) {
@@ -236,7 +245,7 @@ module.exports = function(RED) {
             if (callback) callback();
         });
 
-        socket.on('readDir', function (_adapter, dirName, callback) {
+        socket.on('readDir', function (_adapter, dirName, options, callback) {
             //console.log('readDir ' + _adapter + ' ' + dirName);
             if (fs.existsSync(base + (_adapter ? _adapter + '/' : '') + dirName)) {
                 try {
@@ -244,7 +253,7 @@ module.exports = function(RED) {
                     files.sort();
                     var res = [];
                     for (var i = 0; i < files.length; i++) {
-                        var stats = fs.statSync(base + (_adapter ? _adapter + '/' : '') + dirName + files[i]);
+                        var stats = fs.statSync(base + (_adapter ? _adapter + '/' : '') + (dirName ? dirName + '/' : '') + files[i]);
                         res.push({file: files[i], stats: stats, isDir: stats.isDirectory()})
                     }
 
@@ -327,6 +336,48 @@ module.exports = function(RED) {
                     if (callback) callback(e);
                 }
             }
+        });
+        socket.on('listPermissions', function (callback) {
+            var commandsPermissions = {
+                getObject:          {type: 'object',    operation: 'read'},
+                getObjects:         {type: 'object',    operation: 'list'},
+                getObjectView:      {type: 'object',    operation: 'list'},
+                setObject:          {type: 'object',    operation: 'write'},
+                subscribeObjects:   {type: 'object',    operation: 'read'},
+                unsubscribeObjects: {type: 'object',    operation: 'read'},
+
+                getStates:          {type: 'state',     operation: 'list'},
+                getState:           {type: 'state',     operation: 'read'},
+                setState:           {type: 'state',     operation: 'write'},
+                getStateHistory:    {type: 'state',     operation: 'read'},
+                subscribe:          {type: 'state',     operation: 'read'},
+                unsubscribe:        {type: 'state',     operation: 'read'},
+                getVersion:         {type: '',          operation: ''},
+
+                httpGet:            {type: 'other',     operation: 'http'},
+                sendTo:             {type: 'other',     operation: 'sendto'},
+                sendToHost:         {type: 'other',     operation: 'sendto'},
+
+                readFile:           {type: 'file',      operation: 'read'},
+                readFile64:         {type: 'file',      operation: 'read'},
+                writeFile:          {type: 'file',      operation: 'write'},
+                writeFile64:        {type: 'file',      operation: 'write'},
+                unlink:             {type: 'file',      operation: 'delete'},
+                rename:             {type: 'file',      operation: 'write'},
+                mkdir:              {type: 'file',      operation: 'write'},
+                readDir:            {type: 'file',      operation: 'list'},
+
+                authEnabled:        {type: '',          operation: ''},
+                disconnect:         {type: '',          operation: ''},
+                listPermissions:    {type: '',          operation: ''},
+                getUserPermissions: {type: 'object',    operation: 'read'}
+            };
+
+            if (callback) callback(commandsPermissions);
+        });
+
+        socket.on('getUserPermissions', function (callback) {
+            if (callback) callback(null, {});
         });
     }
 
