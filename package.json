@@ -3,13 +3,13 @@
     "version"      : "0.2.1",
     "description"  : "Visualisation for node-red. Based on ioBroker.vis",
     "dependencies": {
-		"iobroker.vis": ">=0.6.0",
-        "iobroker.vis-metro": "*",
-        "iobroker.vis-colorpicker": "*",
-        "iobroker.vis-hqwidgets": "*",
-        "iobroker.vis-plumb": "*",
-        "iobroker.vis-lcars": "*",
-        "iobroker.vis-bars": "*",
+		"iobroker.vis": "^0.6.7",
+        "iobroker.vis-metro": "^0.1.3",
+        "iobroker.vis-colorpicker": "^0.1.0",
+        "iobroker.vis-hqwidgets": "^0.1.0",
+        "iobroker.vis-plumb": "^0.1.3",
+        "iobroker.vis-lcars": "^0.1.4",
+        "iobroker.vis-bars": "^0.0.1",
         "socket.io": "~1.1.0"
     },
 	"contributors": [
@@ -37,5 +37,5 @@
       "install": "node node_modules/iobroker.vis/lib/install.js"
     },
 
-    "license": "CC BY-NC"
+    "license": "CC-BY-NC-4.0"
 }
