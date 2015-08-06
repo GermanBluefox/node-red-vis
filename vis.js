@@ -227,7 +227,7 @@ module.exports = function(RED) {
             }
         });
 
-        socket.on('writeFile64', function (_adapter, fileName, data64, callback) {
+        socket.on('writeFile64', function (_adapter, fileName, data64, options, callback) {
             //console.log('writeFile64 ' + fileName);
             if (!fs.existsSync(base)) fs.mkdirSync(base);
 
@@ -277,7 +277,7 @@ module.exports = function(RED) {
             //subscribeSocket(this, 'stateChange');
         });
 
-        socket.on('writeFile', function (_adapter, fileName, data, callback) {
+        socket.on('writeFile', function (_adapter, fileName, data, options, callback) {
             //console.log('writeFile ' + _adapter + ' ' + fileName);
             if (!fs.existsSync(base)) fs.mkdirSync(base);
             mkpathSync(base, (_adapter ? _adapter + '/' : '') + fileName);
