@@ -120,6 +120,6 @@ Insert following code into dialog edit field:
 The only issue is **at start** all drawn controls must receive the value.
 
 You can inspire yourself [here](http://dashui.ccu.io). It is previous version of ioBroker.vis.
-Or [here](https://iobroker.net:8080) This is a Live-Version of vis
+Or [here](https://iobroker.net:8080). This is a Live-Version of ioBroker.vis!
 
 
