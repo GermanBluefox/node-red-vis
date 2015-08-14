@@ -119,6 +119,17 @@ Insert following code into dialog edit field:
 
 The only issue is **at start** all drawn controls must receive the value.
 
-You can inspire yourself [here](http://dashui.ccu.io). It is previous version of ioBroker.vis.
+You can inspire yourself [here](https://iobroker.net:8080). This is a Live-Version of ioBroker.vis!
 
 
+Change log
+--------
+
+### v 0.2.2 (2015-08-14)
+* (bluefox) enable to send "vis.control.command" to vis, like 
+```
+     {"command": "refresh", "instance": "FFFFFFFF"}
+```  
+   to refresh the view. Read [here](https://github.com/ioBroker/ioBroker.vis#control-interface) more about commands.
+   
+* (bluefox) remove jshint warnings.

@@ -1,40 +1,40 @@
 {
     "name"         : "node-red-vis",
-    "version"      : "0.2.1",
+    "version"      : "0.2.2",
     "description"  : "Visualisation for node-red. Based on ioBroker.vis",
     "dependencies": {
-		"iobroker.vis": "^0.6.7",
-        "iobroker.vis-metro": "^0.1.3",
+        "iobroker.vis": "^0.6.10",
+        "iobroker.vis-metro": "^0.1.5",
         "iobroker.vis-colorpicker": "^0.1.0",
         "iobroker.vis-hqwidgets": "^0.1.0",
-        "iobroker.vis-plumb": "^0.1.3",
-        "iobroker.vis-lcars": "^0.1.4",
-        "iobroker.vis-bars": "^0.0.1",
-        "socket.io": "~1.1.0"
+        "iobroker.vis-plumb": "^0.1.5",
+        "iobroker.vis-lcars": "^0.1.6",
+        "iobroker.vis-bars": "^0.0.3",
+        "socket.io": "^1.3.6"
     },
-	"contributors": [
-		"bluefox <bluefox@ccu.io>",
-		"hobbyquaker <hq@ccu.io>"
-	],
+    "contributors": [
+        "bluefox <bluefox@ccu.io>",
+        "hobbyquaker <hq@ccu.io>"
+    ],
     "author": "bluefox <bluefox@ccu.io>",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/GermanBluefox/node-red-vis.git"
-	},
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/GermanBluefox/node-red-vis.git"
+    },
     "keywords": ["node-red", "vis", "ioBroker", "visualisation", "web front"],
-	"readmeFilename": "README.md",
-	"homepage": "https://github.com/GermanBluefox/node-red-vis",
-	"bugs": {
-		"url": "https://github.com/GermanBluefox/node-red-vis/issues"
-	},
+    "readmeFilename": "README.md",
+    "homepage": "https://github.com/GermanBluefox/node-red-vis",
+    "bugs": {
+        "url": "https://github.com/GermanBluefox/node-red-vis/issues"
+    },
     "node-red"     : {
         "nodes": {
             "vis": "vis.js"
         }
     },
     "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1",
-      "install": "node node_modules/iobroker.vis/lib/install.js"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "install": "node node_modules/iobroker.vis/lib/install.js"
     },
 
     "license": "CC-BY-NC-4.0"

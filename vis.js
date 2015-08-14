@@ -19,7 +19,6 @@ var fs = require("fs");
 module.exports = function(RED) {
     "use strict";
     var server = null;
-    var subscribes = {};
     var base = RED.settings.userDir || process.env.NODE_RED_HOME;
     var nodes = [];
     var language = 'en';
@@ -32,6 +31,7 @@ module.exports = function(RED) {
         var ext = filename.match(/\.[^.]+$/);
         var isBinary = false;
         var _mimeType;
+
         if (ext == '.css') {
             _mimeType = 'text/css';
         } else if (ext == '.bmp') {
@@ -79,12 +79,22 @@ module.exports = function(RED) {
         } else if (ext == '.mp3') {
             isBinary = true;
             _mimeType = 'audio/mpeg3';
+        } else if (ext == '.avi') {
+            isBinary = true;
+            _mimeType = 'video/avi';
+        } else if (ext == '.mp4') {
+            isBinary = true;
+            _mimeType = 'video/mp4';
+        } else if (ext == '.mkv') {
+            isBinary = true;
+            _mimeType = 'video/mkv';
         } else if (ext == '.ogg') {
             isBinary = true;
             _mimeType = 'audio/ogg';
         } else {
-            _mimeType = 'text/javascript'
+            _mimeType = 'text/javascript';
         }
+
         return {isBinary: isBinary, mimeType: _mimeType, ext: ext};
     }
 
@@ -100,7 +110,7 @@ module.exports = function(RED) {
                 fs.mkdirSync(rootpath);
             }
         }
-    };
+    }
 
     function socketEvents(socket, user) {
 
@@ -249,7 +259,7 @@ module.exports = function(RED) {
             //console.log('readDir ' + _adapter + ' ' + dirName);
             if (fs.existsSync(base + (_adapter ? _adapter + '/' : '') + dirName)) {
                 try {
-                    var files = fs.readdirSync(base + (_adapter ? _adapter + '/' : '') + dirName)
+                    var files = fs.readdirSync(base + (_adapter ? _adapter + '/' : '') + dirName);
                     files.sort();
                     var res = [];
                     for (var i = 0; i < files.length; i++) {
@@ -305,7 +315,6 @@ module.exports = function(RED) {
                         fs.unlinkSync(base + (_adapter ? _adapter + '/' : '') + name);
                     }
                     if (callback) callback();
-                    return;
                 } catch (e) {
                     if (callback) callback(e);
                 }
@@ -318,7 +327,6 @@ module.exports = function(RED) {
                 try {
                     fs.renameSync(base + (_adapter ? _adapter + '/' : '') + oldName, base + (_adapter ? _adapter + '/' : '') + newName);
                     if (callback) callback();
-                    return;
                 } catch (e) {
                     if (callback) callback(e);
                 }
@@ -331,7 +339,6 @@ module.exports = function(RED) {
                 try {
                     fs.mkdirSync(base + (_adapter ? _adapter + '/' : '') + dirname);
                     if (callback) callback();
-                    return;
                 } catch (e) {
                     if (callback) callback(e);
                 }
@@ -387,7 +394,7 @@ module.exports = function(RED) {
         var clients = server.sockets.connected;
 
         for (var i in clients) {
-            clients[i].emit(type, id, obj);
+            if (clients.hasOwnProperty(i)) clients[i].emit(type, id, obj);
         }
     }
 
@@ -403,7 +410,7 @@ module.exports = function(RED) {
 		var that=this;
         createServer();
 		this.on("input",function(msg) {
-            publishAll('stateChange', msg.topic, {val: msg.payload, ts: msg.timestamp, ack: true});
+            publishAll('stateChange', msg.topic, {val: msg.payload, ts: msg.timestamp, ack: (msg.topic != 'vis.control.command')});
 		});
         nodes.push(this);
         this.on('close', function() {
@@ -443,8 +450,8 @@ module.exports = function(RED) {
             file = base + 'vis/' + f[0];
             if (fs.existsSync(file)) {
                 res.contentType(info.mimeType || 'text/javascript');
-                var buffer = fs.readFileSync(file);
-                res.send(buffer);
+                var buffer_ = fs.readFileSync(file);
+                res.send(buffer_);
             } else {
                 if (info.ext == '.css') {
                     res.contentType('text/css');
@@ -454,7 +461,5 @@ module.exports = function(RED) {
                 }
             }
         }
-
-        return;
 	});
-}
+};
