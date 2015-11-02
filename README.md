@@ -124,6 +124,9 @@ You can inspire yourself [here](https://iobroker.net:8080). This is a Live-Versi
 
 Change log
 --------
+### v 0.3.0 (2015-11-02)
+* (bluefox) support of latest version of iobroker.vis 
+
 
 ### v 0.2.2 (2015-08-14)
 * (bluefox) enable to send "vis.control.command" to vis, like 

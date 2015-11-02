@@ -29,6 +29,7 @@ module.exports = function(RED) {
 
     function getMime(filename) {
         var ext = filename.match(/\.[^.]+$/);
+        if (typeof ext == 'object') ext = ext[0];
         var isBinary = false;
         var _mimeType;
 
@@ -430,6 +431,43 @@ module.exports = function(RED) {
         res.send('var socketUrl = ""; var socketSession = "' + '' + '"; var socketNamespace = "vis";');
     });
 
+    // user css files
+    RED.httpNode.get('/vis.0/*', function(req, res, next) {
+        var file;
+        var f = req.url.split('?');
+
+        f[0] = f[0].substring(7);
+
+        file = base + 'vis/' + f[0];
+        var info = getMime(file);
+        if (fs.existsSync(file)) {
+            res.contentType(info.mimeType || 'text/javascript');
+            var buffer = fs.readFileSync(file);
+            res.send(buffer);
+        } else {
+            if (info.ext == '.css') {
+                res.contentType('text/css');
+                res.send('');
+            } else {
+                res.status(404).send('404 Not found. File ' + req.url + ' not found');
+            }
+        }
+    });
+
+    // web libraries
+    RED.httpNode.get('/lib/*', function(req, res, next){
+        var f = req.url.split('?');
+        var file = __dirname + '/node_modules/iobroker.web/www' + f[0];
+        var info = getMime(file);
+        if (fs.existsSync(file)) {
+            res.contentType(info.mimeType || 'text/javascript');
+            var buffer = fs.readFileSync(file);
+            res.send(buffer);
+        } else {
+            res.status(404).send('404 Not found. File ' + req.url + ' not found');
+        }
+    });
+
     RED.httpNode.get('/vis/*', function(req, res, next){
         var file;
         var f = req.url.split('?');
@@ -439,7 +477,11 @@ module.exports = function(RED) {
         } else {
             f[0] = f[0].substring(5);
         }
-        file = __dirname + '/node_modules/iobroker.vis/www/' + f[0];
+        if (f[0].match(/^lib\/css\/themes\//)) {
+            file = __dirname + '/node_modules/iobroker.web/www/' + f[0];
+        } else {
+            file = __dirname + '/node_modules/iobroker.vis/www/' + f[0];
+        }
 
         var info = getMime(file);
         if (fs.existsSync(file)) {
