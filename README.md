@@ -125,7 +125,7 @@ You can inspire yourself [here](https://iobroker.net:8080). This is a Live-Versi
 Change log
 --------
 ### v 0.3.2 (2015-11-10)
-* (bluefox) fix install errors
+* (bluefox) fix install errors and support of npm 3.x
 
 ### v 0.3.0 (2015-11-02)
 * (bluefox) support of latest version of iobroker.vis 
