@@ -22,6 +22,15 @@ module.exports = function(RED) {
     var base = RED.settings.userDir || process.env.NODE_RED_HOME;
     var nodes = [];
     var language = 'en';
+	var node_modules = __dirname + '/node_modules/';
+	
+	if (!fs.existsSync(node_modules + 'iobroker.vis')) {
+		// may be npm 3.0
+		node_modules = __dirname + '/../';
+		if (!fs.existsSync(node_modules + 'iobroker.vis')) {
+			console.error('Cannot find iobroker.vis');
+		}
+	}
     
     if (base && base[base.length - 1] != '/' && base[base.length - 1] != '\\') {
     	base += '/';
@@ -457,7 +466,7 @@ module.exports = function(RED) {
     // web libraries
     RED.httpNode.get('/lib/*', function(req, res, next){
         var f = req.url.split('?');
-        var file = __dirname + '/node_modules/iobroker.web/www' + f[0];
+        var file = node_modules + 'iobroker.web/www' + f[0];
         var info = getMime(file);
         if (fs.existsSync(file)) {
             res.contentType(info.mimeType || 'text/javascript');
@@ -478,9 +487,9 @@ module.exports = function(RED) {
             f[0] = f[0].substring(5);
         }
         if (f[0].match(/^lib\/css\/themes\//)) {
-            file = __dirname + '/node_modules/iobroker.web/www/' + f[0];
+            file = node_modules + 'iobroker.web/www/' + f[0];
         } else {
-            file = __dirname + '/node_modules/iobroker.vis/www/' + f[0];
+            file = node_modules + 'iobroker.vis/www/' + f[0];
         }
 
         var info = getMime(file);
