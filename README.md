@@ -1,10 +1,17 @@
 ![Logo](icons/visLogo.png)
+node-red VIS
+============
+[![NPM version](http://img.shields.io/npm/v/node-red-vis.svg)](https://www.npmjs.com/package/node-red-vis)
+[![Downloads](https://img.shields.io/npm/dm/node-red-vis.svg)](https://www.npmjs.com/package/node-red-vis)
+
+[![NPM](https://nodei.co/npm/node-red-vis.png?downloads=true)](https://nodei.co/npm/node-red-vis/)
+
 
 This project adds web visualisation to Node-RED. It is based on [ioBroker.vis](https://github.com/ioBroker/ioBroker.vis).
 
 Functionality
 -------------
- We introduce "vis in" node which creates the visualisation server with communication via socket.io.
+We introduce "vis in" node which creates the visualisation server with communication via socket.io.
 
 ![Demo interface](doc/Demo1.png)
 
@@ -124,12 +131,14 @@ You can inspire yourself [here](https://iobroker.net:8080). This is a Live-Versi
 
 Change log
 --------
+### v 0.4.0 (2016-06-14)
+* (bluefox) update all vis packages
+
 ### v 0.3.2 (2015-11-10)
 * (bluefox) fix install errors and support of npm 3.x
 
 ### v 0.3.0 (2015-11-02)
 * (bluefox) support of latest version of iobroker.vis 
-
 
 ### v 0.2.2 (2015-08-14)
 * (bluefox) enable to send "vis.control.command" to vis, like 
