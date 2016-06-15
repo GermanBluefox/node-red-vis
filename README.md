@@ -131,6 +131,9 @@ You can inspire yourself [here](https://iobroker.net:8080). This is a Live-Versi
 
 Change log
 --------
+### v 0.4.1 (2016-06-15)
+* (bluefox) update vis version to 0.10.5
+
 ### v 0.4.0 (2016-06-14)
 * (bluefox) update all vis packages
 
