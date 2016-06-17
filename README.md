@@ -131,6 +131,9 @@ You can inspire yourself [here](https://iobroker.net:8080). This is a Live-Versi
 
 Change log
 --------
+### v 0.4.2 (2016-06-17)
+* (bluefox) fix name of google fonts
+
 ### v 0.4.1 (2016-06-15)
 * (bluefox) update vis version to 0.10.5
 
