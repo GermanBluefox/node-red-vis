@@ -1,11 +1,12 @@
 {
     "name"         : "node-red-vis",
-    "version"      : "0.4.2",
+    "version"      : "0.4.3",
     "description"  : "Visualisation for node-red. Based on ioBroker.vis",
     "dependencies": {
         "iobroker.vis": "^0.10.5",
         "iobroker.vis-bars": "*",
         "iobroker.vis-colorpicker": "*",
+		"ioBroker.vis-canvas-gauges": "*",
         "iobroker.vis-fancyswitch": "*",
 		"iobroker.vis-google-fonts": "*",
         "iobroker.vis-hqwidgets": "*",
@@ -13,6 +14,7 @@
         "iobroker.vis-justgage": "*",
         "iobroker.vis-keyboard": "*",
         "iobroker.vis-lcars": "*",
+        "iobroker.vis-map": "*",
         "iobroker.vis-metro": "*",
         "iobroker.vis-plumb": "*",
         "iobroker.vis-rgraph": "*",
@@ -42,7 +44,7 @@
     },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "install": "node node_modules/iobroker.vis/lib/install.js"
+        "install": "node lib/install.js"
     },
 
     "license": "CC-BY-NC-4.0"

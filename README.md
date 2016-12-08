@@ -131,6 +131,10 @@ You can inspire yourself [here](https://iobroker.net:8080). This is a Live-Versi
 
 Change log
 --------
+### v 0.4.3 (2016-12-08)
+* (bluefox) add support of npm 3 
+* (bluefox) add vis-canvas-gauges
+
 ### v 0.4.2 (2016-06-17)
 * (bluefox) fix name of google fonts
 
