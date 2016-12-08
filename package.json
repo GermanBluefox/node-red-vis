@@ -6,7 +6,7 @@
         "iobroker.vis": "^0.10.5",
         "iobroker.vis-bars": "*",
         "iobroker.vis-colorpicker": "*",
-		"ioBroker.vis-canvas-gauges": "*",
+		"iobroker.vis-canvas-gauges": "*",
         "iobroker.vis-fancyswitch": "*",
 		"iobroker.vis-google-fonts": "*",
         "iobroker.vis-hqwidgets": "*",
